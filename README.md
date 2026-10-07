@@ -18,7 +18,7 @@
     </td>
     <td align="center" width="35%">
       <!-- PLACEHOLDER UNTUK GIF KAMU -->
-      <img src="URL_GIF_KAMU_DISINI" width="200" alt="Kazumi Majiami" />
+      <img src="[URL_GIF_KAMU_DISINI](https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d)" width="200" alt="Kazumi Majiami" />
     </td>
   </tr>
 </table>
