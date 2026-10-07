@@ -10,10 +10,10 @@
   <tr>
     <td valign="top" width="65%">
       <ul>
-        <li>🌱 I focus on building clean, simple, and functional applications.</li>
-        <li>🚀 Constantly learning new technologies for both <b>Web</b> and <b>Mobile Development</b>.</li>
-        <li>💡 I enjoy turning complex problems into intuitive user experiences.</li>
-        <li>📫 Feel free to reach out to me at: <b>email_kamu@gmail.com</b></li>
+        <li>💻 Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.</li>
+        <li>🚀 Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.</li>
+        <li>🧩 Suka ngubah ide yang awalnya ribet jadi sesuatu yang lebih simpel dan bisa dipakai.</li>
+        <li>🎨 Tertarik juga sama UI/UX dan gimana bikin aplikasi yang enak dilihat sekaligus nyaman digunakan.</li>
       </ul>
     </td>
     <td align="center" width="35%">
