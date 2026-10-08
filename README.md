@@ -1,27 +1,15 @@
 <div align="center">
-  <h1>Hi, I'm Kazumi Majiami! 👋</h1>
+  <h1>I'm Kazumi Majiami! 👋</h1>
   <p>Software Developer | Tech Enthusiast</p>
 </div>
 
 ---
 
 ### 👨‍💻 A little about me...
-<table>
-  <tr>
-    <td valign="top" width="65%">
-      <ul>
-        <li>💻 Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.</li>
-        <li>🚀 Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.</li>
-        <li>🧩 Suka ngubah ide yang awalnya ribet jadi sesuatu yang lebih simpel dan bisa dipakai.</li>
-        <li>🎨 Tertarik juga sama UI/UX dan gimana bikin aplikasi yang enak dilihat sekaligus nyaman digunakan.</li>
-      </ul>
-    </td>
-    <td align="center" width="35%">
-      <!-- PLACEHOLDER UNTUK GIF KAMU -->
-      <img src=https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d width="200" alt="Kazumi Majiami" />
-    </td>
-  </tr>
-</table>
+- 💻 Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.
+- 🚀 Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.
+- 🧩 Suka ngubah ide yang awalnya ribet jadi sesuatu yang lebih simpel dan bisa dipakai.
+- 🎨 Tertarik juga sama UI/UX dan gimana bikin aplikasi yang enak dilihat sekaligus nyaman digunakan.
 
 ---
 
@@ -40,6 +28,12 @@
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" />
   <img src="https://img.shields.io/badge/Visual_Basic-512BD4?style=for-the-badge&logo=visual-basic&logoColor=white" />
 </p>
+
+---
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="250" alt="Kazumi Majiami" />
+</div>
 
 ---
 
