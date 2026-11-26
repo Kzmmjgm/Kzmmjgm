@@ -38,6 +38,10 @@
 </p>
 
 ---
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/now-playing.svg?v=2" alt="Currently Playing" />
+</p>
+---
 
 ### ✦ Let's Connect
 <img align="right" src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="220" alt="Kazumi Majigami" />
