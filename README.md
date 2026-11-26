@@ -33,7 +33,7 @@
 
 ### 🏙️ The city I built this year
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg" alt="Kzmmjgm 3D contribution city" />
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg?v=1" alt="Kzmmjgm 3D contribution city" />
 </p>
 
 <p align="center"><sub>Every building is a day; taller means more contributions.</sub></p>
@@ -43,7 +43,7 @@
 ### 🤝 Let's Connect
 <p align="center">Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka buat diskusi seputar web, mobile, atau kolaborasi project.</p>
 <p align="center">
-  <a href="LINK_LINKEDIN_DISINI"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
-  <a href="LINK_PORTFOLIO_ATAU_IG"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"/></a>
-  <a href="mailto:EMAIL_KAMU_DISINI"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/assets/connect.gif" alt="Let's Connect GIF" />
 </p>
+<p align="center">
+  <a href="LINK_LINKEDIN_DISINI"><img src="
