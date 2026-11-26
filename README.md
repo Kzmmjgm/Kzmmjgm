@@ -6,7 +6,7 @@
 <br/>
 
 ### ✦ About Me
-<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg?v=10" width="410" alt="Kzmmjgm 3D contribution city" />
+<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/profile-3d-contrib/profile-night-green.svg" width="410" alt="Kzmmjgm 3D contribution city" />
 
 - `›` Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.
 - `›` Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.
