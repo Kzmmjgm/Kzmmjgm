@@ -6,7 +6,7 @@
 <br/>
 
 ### ✦ About Me
-<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/profile-3d-contrib/profile-night-green.svg" width="410" alt="Kzmmjgm 3D contribution city" />
+<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/profile-3d-contrib/profile-night-green.svg?v=2" width="410" alt="Kzmmjgm 3D contribution city" />
 
 - `›` Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.
 - `›` Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.
@@ -18,7 +18,9 @@
 
 <br clear="right" />
 
----
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/star-divider.svg" alt="" />
+</p>
 
 ### ✦ Tech Stack
 <p align="center">
@@ -37,12 +39,19 @@
   <img src="https://img.shields.io/badge/Visual_Basic-161b22?style=for-the-badge&logo=dotnet&logoColor=A78BFA" />
 </p>
 
----
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/now-playing.svg?v=2" alt="Currently Playing" />
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/star-divider.svg" alt="" />
 </p>
 
----
+<p align="center">
+  <a href="https://www.youtube.com/results?search_query=Lamp+1998+Her+Watch" target="_blank">
+    <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/now-playing.svg?v=3" alt="Currently Playing: Lamp - 1998" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/star-divider.svg" alt="" />
+</p>
 
 ### ✦ Let's Connect
 <img align="right" src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="220" alt="Kazumi Majigami" />
@@ -53,9 +62,8 @@ Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka 
 
 <br/>
 
-<a href="LINK_LINKEDIN_DISINI"><img src="https://img.shields.io/badge/LinkedIn-161b22?style=for-the-badge&logo=linkedin&logoColor=38BDF8" alt="LinkedIn"/></a>
-<a href="LINK_PORTFOLIO_ATAU_IG"><img src="https://img.shields.io/badge/Instagram-161b22?style=for-the-badge&logo=instagram&logoColor=F472B6" alt="Instagram"/></a>
-<a href="mailto:EMAIL_KAMU_DISINI"><img src="https://img.shields.io/badge/Email-161b22?style=for-the-badge&logo=gmail&logoColor=F87171" alt="Email"/></a>
+<a href="https://www.linkedin.com/in/hugoogp/"><img src="https://img.shields.io/badge/LinkedIn-161b22?style=for-the-badge&logo=linkedin&logoColor=38BDF8" alt="LinkedIn"/></a>
+<a href="https://www.instagram.com/entflohenes?bqrl=Z3ZpN3pjcDk0b25x"><img src="https://img.shields.io/badge/Instagram-161b22?style=for-the-badge&logo=instagram&logoColor=F472B6" alt="Instagram"/></a>
+<a href="mailto:hugogario999@gmail.com"><img src="https://img.shields.io/badge/Email-161b22?style=for-the-badge&logo=gmail&logoColor=F87171" alt="Email"/></a>
 
 <br clear="right" />
-
