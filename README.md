@@ -37,7 +37,7 @@
 
 ### 🏙️ The city I built this year
 <p align="center">
-  <img src="https://www.gitskins.com/api/section/city?username=kzmmjgm&theme=aurora&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F321228359%3Fu%3D27d8c554c6a16141891ad510a7bd6531eea2bc33%26v%3D4" alt="kzmmjgm city visual" />
+  <img src="https://raw.githubusercontent.com/kzmmjgm/kzmmjgm/main/profile-3d-contrib/profile-night-green.svg" alt="kzmmjgm 3D contribution city" />
 </p>
 
 <p align="center"><sub>Every building is a day; taller means more contributions.</sub></p>
