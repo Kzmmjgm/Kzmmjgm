@@ -16,32 +16,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-      - name: Customize 3D SVG (GitHub dark bg & clean stats/labels)
+      - name: Crop 3D city & match GitHub dark bg
         run: |
           python3 - << 'EOF'
           import glob
+          import re
           import xml.etree.ElementTree as ET
 
           ET.register_namespace("", "http://www.w3.org/2000/svg")
 
-          # Teks label radar, donut, stats, dan tanggal yang ingin dibuang
-          remove_texts = {
-              "Commit", "Issue", "PullReq", "Review", "Repo",
-              "other", "contributions", "10K", "1K", "100", "10", "1"
-          }
+          # Crop area kotak 3D (x: 40..1210, y: 140..785) biar radar/donut/ikon bawah terpotong
+          crop_x, crop_y, crop_w, crop_h = 40, 140, 1170, 645
 
           for path in glob.glob("profile-3d-contrib/*.svg"):
-              tree = ET.parse(path)
-              root = tree.getroot()
+              with open(path, "r", encoding="utf-8") as f:
+                  raw = f.read()
 
-              # Samakan warna background utama ke GitHub dark mode (#0d1117)
+              # Samakan warna .fill-bg & .stroke-bg ke #0d1117
+              raw = re.sub(r"(\.fill-bg\s*\{\s*fill:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
+              raw = re.sub(r"(\.stroke-bg\s*\{\s*stroke:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
+
+              root = ET.fromstring(raw)
+
+              # Ubah viewBox & ukuran SVG ke area kotak kota
+              root.attrib["viewBox"] = f"{crop_x} {crop_y} {crop_w} {crop_h}"
+              root.attrib["width"] = str(crop_w)
+              root.attrib["height"] = str(crop_h)
+
               style = root.attrib.get("style", "")
               if "background" in style:
                   parts = [p for p in style.split(";") if not p.strip().startswith("background")]
                   style = ";".join(parts).strip(";")
               root.attrib["style"] = (style + "; background: #0d1117;").lstrip("; ")
 
-              # Hapus elemen <text> stats/label/tanggal & <rect> background kotak penuh
               parent_map = {child: parent for parent in root.iter() for child in parent}
               for elem in list(root.iter()):
                   parent = parent_map.get(elem)
@@ -49,23 +56,18 @@ jobs:
                       continue
 
                   tag = elem.tag.split("}")[-1]
+                  cls = elem.attrib.get("class", "")
 
-                  # Hapus rect background penuh yang bikin warna hitam pekat berbeda
-                  if tag == "rect" and elem.attrib.get("width") in ("100%", "1000", "1200"):
+                  # Hapus rect latar penuh yang menutupi background #0d1117
+                  if tag == "rect" and "fill-bg" in cls:
                       parent.remove(elem)
                       continue
 
+                  # Hapus elemen teks/label/ikon di luar kotak kota
                   if tag == "text":
-                      txt = "".join(elem.itertext()).strip()
-                      if (
-                          not txt
-                          or txt in remove_texts
-                          or "contributions" in txt
-                          or "/" in txt
-                          or txt.isdigit()
-                      ):
-                          parent.remove(elem)
+                      parent.remove(elem)
 
+              tree = ET.ElementTree(root)
               tree.write(path, encoding="utf-8", xml_declaration=True)
           EOF
       - name: Commit & Push
