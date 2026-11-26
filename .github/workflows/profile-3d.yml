@@ -16,6 +16,58 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
+      - name: Customize 3D SVG (GitHub dark bg & clean stats/labels)
+        run: |
+          python3 - << 'EOF'
+          import glob
+          import xml.etree.ElementTree as ET
+
+          ET.register_namespace("", "http://www.w3.org/2000/svg")
+
+          # Teks label radar, donut, stats, dan tanggal yang ingin dibuang
+          remove_texts = {
+              "Commit", "Issue", "PullReq", "Review", "Repo",
+              "other", "contributions", "10K", "1K", "100", "10", "1"
+          }
+
+          for path in glob.glob("profile-3d-contrib/*.svg"):
+              tree = ET.parse(path)
+              root = tree.getroot()
+
+              # Samakan warna background utama ke GitHub dark mode (#0d1117)
+              style = root.attrib.get("style", "")
+              if "background" in style:
+                  parts = [p for p in style.split(";") if not p.strip().startswith("background")]
+                  style = ";".join(parts).strip(";")
+              root.attrib["style"] = (style + "; background: #0d1117;").lstrip("; ")
+
+              # Hapus elemen <text> stats/label/tanggal & <rect> background kotak penuh
+              parent_map = {child: parent for parent in root.iter() for child in parent}
+              for elem in list(root.iter()):
+                  parent = parent_map.get(elem)
+                  if parent is None:
+                      continue
+
+                  tag = elem.tag.split("}")[-1]
+
+                  # Hapus rect background penuh yang bikin warna hitam pekat berbeda
+                  if tag == "rect" and elem.attrib.get("width") in ("100%", "1000", "1200"):
+                      parent.remove(elem)
+                      continue
+
+                  if tag == "text":
+                      txt = "".join(elem.itertext()).strip()
+                      if (
+                          not txt
+                          or txt in remove_texts
+                          or "contributions" in txt
+                          or "/" in txt
+                          or txt.isdigit()
+                      ):
+                          parent.remove(elem)
+
+              tree.write(path, encoding="utf-8", xml_declaration=True)
+          EOF
       - name: Commit & Push
         run: |
           git config --local user.email "action@github.com"
