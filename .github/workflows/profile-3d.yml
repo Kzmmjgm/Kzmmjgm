@@ -16,12 +16,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-      - name: Remove radar/donut/stats & fit 3D city
+      - name: Clean SVG & add night-sky aesthetic decorations
         run: |
           python3 - << 'EOF'
           import glob
           import re
           import xml.etree.ElementTree as ET
+          from datetime import datetime
 
           ET.register_namespace("", "http://www.w3.org/2000/svg")
 
@@ -40,18 +41,18 @@ jobs:
                       return True
               return False
 
+          year = datetime.now().year
+
           for path in glob.glob("profile-3d-contrib/*.svg"):
               with open(path, "r", encoding="utf-8") as f:
                   raw = f.read()
 
-              # Samakan warna background ke GitHub dark mode (#0d1117)
               raw = re.sub(r"(\.fill-bg\s*\{\s*fill:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
               raw = re.sub(r"(\.stroke-bg\s*\{\s*stroke:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
 
               root = ET.fromstring(raw)
               parent_map = {child: parent for parent in root.iter() for child in parent}
 
-              # Hitung bounding box semua blok kota
               city_xs, city_ys = [], []
               for elem in root.iter():
                   cls = elem.attrib.get("class", "")
@@ -68,7 +69,6 @@ jobs:
                                   break
                           curr = parent_map.get(curr)
 
-              # Hapus semua elemen/grup yang bukan bagian dari blok kota atau style
               for child in list(root):
                   tag = child.tag.split("}")[-1]
                   if tag == "style":
@@ -76,7 +76,6 @@ jobs:
                   if not has_city_block(child):
                       root.remove(child)
 
-              # Bersihkan sub-elemen di dalam <g> utama yang bukan blok kota
               for elem in list(root.iter()):
                   parent = parent_map.get(elem)
                   if parent is None or elem is root:
@@ -102,6 +101,71 @@ jobs:
                   root.attrib["viewBox"] = f"{x0} {y0} {w} {h}"
                   root.attrib["width"] = str(w)
                   root.attrib["height"] = str(h)
+
+                  # Posisi relatif ruang kosong kanan atas (langit malam) & kiri bawah (HUD)
+                  mx, my = x0 + int(w * 0.80), y0 + int(h * 0.22)
+                  s1x, s1y = x0 + int(w * 0.64), y0 + int(h * 0.14)
+                  s2x, s2y = x0 + int(w * 0.91), y0 + int(h * 0.34)
+                  s3x, s3y = x0 + int(w * 0.70), y0 + int(h * 0.35)
+                  s4x, s4y = x0 + int(w * 0.56), y0 + int(h * 0.22)
+                  s5x, s5y = x0 + int(w * 0.14), y0 + int(h * 0.58)
+                  s6x, s6y = x0 + int(w * 0.36), y0 + int(h * 0.89)
+
+                  lx, ly = x0 + int(w * 0.04), y0 + int(h * 0.72)
+
+                  decor_svg = f'''
+                  <g xmlns="http://www.w3.org/2000/svg" id="aesthetic-decor">
+                    <style>
+                      @keyframes twinkleA {{ 0%, 100% {{ opacity: 0.95; }} 50% {{ opacity: 0.25; }} }}
+                      @keyframes twinkleB {{ 0%, 100% {{ opacity: 0.3; }} 50% {{ opacity: 0.95; }} }}
+                      @keyframes pulseDot {{ 0%, 100% {{ opacity: 1; }} 50% {{ opacity: 0.35; }} }}
+                      .twA {{ animation: twinkleA 3.2s ease-in-out infinite; }}
+                      .twB {{ animation: twinkleB 4.1s ease-in-out infinite; }}
+                      .pulse {{ animation: pulseDot 2.2s ease-in-out infinite; }}
+                      .hud-title {{ font-family: "Fira Code", "Ubuntu Mono", monospace; font-size: 23px; font-weight: 600; fill: #8ECAE6; }}
+                      .hud-sub {{ font-family: "Fira Code", "Ubuntu Mono", monospace; font-size: 20px; fill: #8b949e; }}
+                    </style>
+
+                    <!-- Garis konstelasi tipis di langit kanan atas -->
+                    <polyline points="{s4x},{s4y} {s1x},{s1y} {s3x},{s3y} {s2x},{s2y}" fill="none" stroke="#8ECAE6" stroke-opacity="0.14" stroke-width="2" stroke-dasharray="6 6" />
+
+                    <!-- Bulan sabit biru es + glow lembut -->
+                    <g transform="translate({mx}, {my})">
+                      <circle cx="0" cy="0" r="88" fill="#8ECAE6" opacity="0.05" />
+                      <circle cx="0" cy="0" r="64" fill="#8ECAE6" opacity="0.09" />
+                      <path d="M 15 -47.7 A 50 50 0 1 0 47.7 15 A 42 42 0 0 1 15 -47.7 Z" fill="#8ECAE6" opacity="0.92" />
+                    </g>
+
+                    <!-- Bintang berkelip (✦) & titik kecil -->
+                    <g class="twA" transform="translate({s1x}, {s1y})">
+                      <path d="M 0 -20 Q 0 0 20 0 Q 0 0 0 20 Q 0 0 -20 0 Q 0 0 0 -20 Z" fill="#8ECAE6" />
+                    </g>
+                    <g class="twB" transform="translate({s2x}, {s2y})">
+                      <path d="M 0 -15 Q 0 0 15 0 Q 0 0 0 15 Q 0 0 -15 0 Q 0 0 0 -15 Z" fill="#57da69" />
+                    </g>
+                    <g class="twA" transform="translate({s3x}, {s3y})">
+                      <circle cx="0" cy="0" r="5" fill="#8ECAE6" />
+                    </g>
+                    <g class="twB" transform="translate({s4x}, {s4y})">
+                      <circle cx="0" cy="0" r="4" fill="#e6edf3" />
+                    </g>
+                    <g class="twA" transform="translate({s5x}, {s5y})">
+                      <path d="M 0 -13 Q 0 0 13 0 Q 0 0 0 13 Q 0 0 -13 0 Q 0 0 0 -13 Z" fill="#8ECAE6" opacity="0.7" />
+                    </g>
+                    <g class="twB" transform="translate({s6x}, {s6y})">
+                      <circle cx="0" cy="0" r="4.5" fill="#57da69" opacity="0.7" />
+                    </g>
+
+                    <!-- Mini HUD minimalis di kiri bawah -->
+                    <g transform="translate({lx}, {ly})">
+                      <rect x="0" y="0" width="350" height="114" rx="16" fill="#161b22" stroke="#30363d" stroke-width="2.5" />
+                      <circle class="pulse" cx="32" cy="40" r="8" fill="#57da69" />
+                      <text x="54" y="48" class="hud-title">STATUS: BUILDING</text>
+                      <text x="26" y="88" class="hud-sub">✦ kazumi.city // {year}</text>
+                    </g>
+                  </g>
+                  '''
+                  root.append(ET.fromstring(decor_svg))
 
               style = root.attrib.get("style", "")
               if "background" in style:
