@@ -31,14 +31,20 @@
 
 ---
 
-### 🏙️ The city I built this year
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg?v=1" alt="Kzmmjgm 3D contribution city" />
-</p>
-
-<p align="center"><sub>Every building is a day; taller means more contributions.</sub></p> 
+<table>
+<tr>
+<td valign="middle" width="38%">
+<h3>🏙️ The city I built this year</h3>
+<p><sub>Every building is a day; taller means more contributions.</sub></p>
+</td>
+<td align="right" width="62%">
+<img src="profile-3d-contrib/profile-night-green.svg" width="420" alt="Kzmmjgm 3D contribution city" />
+</td>
+</tr>
+</table>
 
 ---
+
 ### 🤝 Let's Connect
 <table>
 <tr>
