@@ -57,3 +57,4 @@ Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka 
 <a href="mailto:EMAIL_KAMU_DISINI"><img src="https://img.shields.io/badge/Email-161b22?style=for-the-badge&logo=gmail&logoColor=F87171" alt="Email"/></a>
 
 <br clear="right" />
+
