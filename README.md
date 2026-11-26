@@ -33,7 +33,7 @@
 
 ### 🏙️ The city I built this year
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kzmmjgm/kzmmjgm/main/profile-3d-contrib/profile-night-green.svg" alt="kzmmjgm 3D contribution city" />
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg" alt="Kzmmjgm 3D contribution city" />
 </p>
 
 <p align="center"><sub>Every building is a day; taller means more contributions.</sub></p>
