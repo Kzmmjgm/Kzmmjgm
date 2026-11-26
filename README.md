@@ -1,5 +1,9 @@
+<p align="center">
+  <img src="https://www.gitskins.com/api/section/hero?username=kzmmjgm&theme=aurora&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F321228359%3Fu%3D27d8c554c6a16141891ad510a7bd6531eea2bc33%26v%3D4" alt="kzmmjgm hero visual" />
+</p>
+
 <div align="center">
-  <h1>Hi, I'm Kazumi Majiami! 👋</h1>
+  <h1>Hi, I'm Kazumi Majigami! 👋</h1>
   <p>Software Developer | Tech Enthusiast</p>
 </div>
 
@@ -31,6 +35,15 @@
 
 ---
 
+### 🏙️ The city I built this year
+<p align="center">
+  <img src="https://www.gitskins.com/api/section/city?username=kzmmjgm&theme=aurora&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F321228359%3Fu%3D27d8c554c6a16141891ad510a7bd6531eea2bc33%26v%3D4" alt="kzmmjgm city visual" />
+</p>
+
+<p align="center"><sub>Every building is a day; taller means more contributions.</sub></p>
+
+---
+
 ### 🤝 Let's Connect
 <table>
   <tr>
@@ -44,7 +57,7 @@
       </p>
     </td>
     <td align="center" width="40%">
-      <img src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="200" alt="Kazumi Majiami" />
+      <img src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="200" alt="Kazumi Majigami" />
     </td>
   </tr>
 </table>
