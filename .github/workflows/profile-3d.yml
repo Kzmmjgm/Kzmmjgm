@@ -16,7 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-      - name: Crop 3D city & match GitHub dark bg
+      - name: Remove radar/donut/stats & fit 3D city
         run: |
           python3 - << 'EOF'
           import glob
@@ -25,47 +25,89 @@ jobs:
 
           ET.register_namespace("", "http://www.w3.org/2000/svg")
 
-          # Crop area kotak 3D (x: 40..1210, y: 140..785) biar radar/donut/ikon bawah terpotong
-          crop_x, crop_y, crop_w, crop_h = 40, 140, 1170, 645
+          def parse_translate(transform_str):
+              if not transform_str:
+                  return None
+              m = re.search(r"translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)", transform_str)
+              if not m:
+                  return None
+              return float(m.group(1)), float(m.group(2))
+
+          def has_city_block(elem):
+              for sub in elem.iter():
+                  cls = sub.attrib.get("class", "")
+                  if any(k in cls for k in ("cont-top-", "cont-left-", "cont-right-")):
+                      return True
+              return False
 
           for path in glob.glob("profile-3d-contrib/*.svg"):
               with open(path, "r", encoding="utf-8") as f:
                   raw = f.read()
 
-              # Samakan warna .fill-bg & .stroke-bg ke #0d1117
+              # Samakan warna background ke GitHub dark mode (#0d1117)
               raw = re.sub(r"(\.fill-bg\s*\{\s*fill:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
               raw = re.sub(r"(\.stroke-bg\s*\{\s*stroke:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
 
               root = ET.fromstring(raw)
+              parent_map = {child: parent for parent in root.iter() for child in parent}
 
-              # Ubah viewBox & ukuran SVG ke area kotak kota
-              root.attrib["viewBox"] = f"{crop_x} {crop_y} {crop_w} {crop_h}"
-              root.attrib["width"] = str(crop_w)
-              root.attrib["height"] = str(crop_h)
+              # Hitung bounding box semua blok kota
+              city_xs, city_ys = [], []
+              for elem in root.iter():
+                  cls = elem.attrib.get("class", "")
+                  if any(k in cls for k in ("cont-top-", "cont-left-", "cont-right-")):
+                      curr = elem
+                      while curr is not None:
+                          tag = curr.tag.split("}")[-1]
+                          if tag == "g" and "transform" in curr.attrib:
+                              tr = parse_translate(curr.attrib["transform"])
+                              if tr:
+                                  tx, ty = tr
+                                  city_xs.extend([tx, tx + 55.0])
+                                  city_ys.extend([ty - 40.0, ty + 55.0])
+                                  break
+                          curr = parent_map.get(curr)
+
+              # Hapus semua elemen/grup yang bukan bagian dari blok kota atau style
+              for child in list(root):
+                  tag = child.tag.split("}")[-1]
+                  if tag == "style":
+                      continue
+                  if not has_city_block(child):
+                      root.remove(child)
+
+              # Bersihkan sub-elemen di dalam <g> utama yang bukan blok kota
+              for elem in list(root.iter()):
+                  parent = parent_map.get(elem)
+                  if parent is None or elem is root:
+                      continue
+                  tag = elem.tag.split("}")[-1]
+                  if tag == "style":
+                      continue
+                  if tag in ("text", "circle", "ellipse", "line", "polygon", "path", "rect"):
+                      cls = elem.attrib.get("class", "")
+                      is_city = any(k in cls for k in ("cont-top-", "cont-left-", "cont-right-"))
+                      if not is_city:
+                          parent.remove(elem)
+
+              if city_xs and city_ys:
+                  pad = 30.0
+                  x0 = max(0, int(min(city_xs) - pad))
+                  y0 = max(0, int(min(city_ys) - pad))
+                  x1 = int(max(city_xs) + pad)
+                  y1 = int(max(city_ys) + pad)
+                  w = max(100, x1 - x0)
+                  h = max(100, y1 - y0)
+
+                  root.attrib["viewBox"] = f"{x0} {y0} {w} {h}"
+                  root.attrib["width"] = str(w)
+                  root.attrib["height"] = str(h)
 
               style = root.attrib.get("style", "")
               if "background" in style:
                   parts = [p for p in style.split(";") if not p.strip().startswith("background")]
                   style = ";".join(parts).strip(";")
               root.attrib["style"] = (style + "; background: #0d1117;").lstrip("; ")
-
-              parent_map = {child: parent for parent in root.iter() for child in parent}
-              for elem in list(root.iter()):
-                  parent = parent_map.get(elem)
-                  if parent is None:
-                      continue
-
-                  tag = elem.tag.split("}")[-1]
-                  cls = elem.attrib.get("class", "")
-
-                  # Hapus rect latar penuh yang menutupi background #0d1117
-                  if tag == "rect" and "fill-bg" in cls:
-                      parent.remove(elem)
-                      continue
-
-                  # Hapus elemen teks/label/ikon di luar kotak kota
-                  if tag == "text":
-                      parent.remove(elem)
 
               tree = ET.ElementTree(root)
               tree.write(path, encoding="utf-8", xml_declaration=True)
