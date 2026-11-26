@@ -16,10 +16,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-      - name: Clean SVG & add night-sky aesthetic decorations
+      - name: Clean SVG & add animated night sky + isometric cars
         run: |
           python3 - << 'EOF'
           import glob
+          import math
           import re
           import xml.etree.ElementTree as ET
           from datetime import datetime
@@ -42,6 +43,7 @@ jobs:
               return False
 
           year = datetime.now().year
+          iso_slope = 0.57735  # tan(30 deg)
 
           for path in glob.glob("profile-3d-contrib/*.svg"):
               with open(path, "r", encoding="utf-8") as f:
@@ -54,6 +56,10 @@ jobs:
               parent_map = {child: parent for parent in root.iter() for child in parent}
 
               city_xs, city_ys = [], []
+              flat_blocks = []
+              all_ground_blocks = []
+              seen_groups = set()
+
               for elem in root.iter():
                   cls = elem.attrib.get("class", "")
                   if any(k in cls for k in ("cont-top-", "cont-left-", "cont-right-")):
@@ -61,12 +67,31 @@ jobs:
                       while curr is not None:
                           tag = curr.tag.split("}")[-1]
                           if tag == "g" and "transform" in curr.attrib:
-                              tr = parse_translate(curr.attrib["transform"])
-                              if tr:
-                                  tx, ty = tr
-                                  city_xs.extend([tx, tx + 55.0])
-                                  city_ys.extend([ty - 40.0, ty + 55.0])
-                                  break
+                              if curr not in seen_groups:
+                                  seen_groups.add(curr)
+                                  tr = parse_translate(curr.attrib["transform"])
+                                  if tr:
+                                      tx, ty = tr
+                                      city_xs.extend([tx, tx + 55.0])
+                                      city_ys.extend([ty - 40.0, ty + 55.0])
+
+                                      # Cari tinggi gedung untuk tahu posisi permukaan tanahnya
+                                      is_flat = False
+                                      bh = 2.6
+                                      for sub in curr:
+                                          scls = sub.attrib.get("class", "")
+                                          if "cont-top-0" in scls:
+                                              is_flat = True
+                                          if "cont-left-" in scls:
+                                              try:
+                                                  bh = float(sub.attrib.get("height", "2.6"))
+                                              except ValueError:
+                                                  bh = 2.6
+                                      ground_y = ty + (bh - 2.6) * 1.15
+                                      all_ground_blocks.append((tx, ground_y))
+                                      if is_flat:
+                                          flat_blocks.append((tx, ty))
+                              break
                           curr = parent_map.get(curr)
 
               for child in list(root):
@@ -90,7 +115,7 @@ jobs:
                           parent.remove(elem)
 
               if city_xs and city_ys:
-                  pad = 30.0
+                  pad = 50.0
                   x0 = max(0, int(min(city_xs) - pad))
                   y0 = max(0, int(min(city_ys) - pad))
                   x1 = int(max(city_xs) + pad)
@@ -102,7 +127,44 @@ jobs:
                   root.attrib["width"] = str(w)
                   root.attrib["height"] = str(h)
 
-                  # Posisi relatif ruang kosong kanan atas (langit malam) & kiri bawah (HUD)
+                  # Hitung jalur jalan raya isometrik di pinggir kota
+                  ref_blocks = flat_blocks if len(flat_blocks) >= 10 else all_ground_blocks
+                  offsets = [by - iso_slope * bx for bx, by in ref_blocks]
+                  min_off, max_off = min(offsets), max(offsets)
+
+                  top_edge = sorted(
+                      [(bx, by) for (bx, by), off in zip(ref_blocks, offsets) if abs(off - min_off) < 18],
+                      key=lambda p: p[0],
+                  )
+                  bot_edge = sorted(
+                      [(bx, by) for (bx, by), off in zip(ref_blocks, offsets) if abs(off - max_off) < 18],
+                      key=lambda p: p[0],
+                  )
+
+                  if top_edge and bot_edge:
+                      # Jalur 1: pinggir kiri-bawah menuju distrik hijau (turun-kanan)
+                      c1_sx, c1_sy = bot_edge[0][0] - 8, bot_edge[0][1] + 24
+                      c1_ex, c1_ey = bot_edge[-1][0] + 18, bot_edge[-1][1] + 38
+                      c1_dx, c1_dy = c1_ex - c1_sx, c1_ey - c1_sy
+                      c1_ang = math.degrees(math.atan2(c1_dy, c1_dx))
+
+                      # Jalur 2: pinggir kanan-atas menjauhi distrik hijau (naik-kiri)
+                      c2_sx, c2_sy = top_edge[-1][0] + 46, top_edge[-1][1] - 12
+                      c2_ex, c2_ey = top_edge[0][0] + 24, top_edge[0][1] - 24
+                      c2_dx, c2_dy = c2_ex - c2_sx, c2_ey - c2_sy
+                      c2_ang = math.degrees(math.atan2(c2_dy, c2_dx))
+
+                      # Jalur 3: melintas persis di depan distrik gedung hijau (kanan-bawah ke kiri-bawah)
+                      c3_sx, c3_sy = top_edge[-1][0] + 54, top_edge[-1][1] + 8
+                      c3_ex, c3_ey = bot_edge[-1][0] + 36, bot_edge[-1][1] + 32
+                      c3_dx, c3_dy = c3_ex - c3_sx, c3_ey - c3_sy
+                      c3_ang = math.degrees(math.atan2(c3_dy, c3_dx))
+                  else:
+                      c1_sx, c1_sy, c1_dx, c1_dy, c1_ang = x0 + 80, y0 + 180, 900, 520, 30
+                      c2_sx, c2_sy, c2_dx, c2_dy, c2_ang = x0 + 1060, y0 + 620, -900, -520, -150
+                      c3_sx, c3_sy, c3_dx, c3_dy, c3_ang = x0 + 1080, y0 + 640, -130, 75, 150
+
+                  # Posisi langit malam, shooting star, & HUD
                   mx, my = x0 + int(w * 0.80), y0 + int(h * 0.22)
                   s1x, s1y = x0 + int(w * 0.64), y0 + int(h * 0.14)
                   s2x, s2y = x0 + int(w * 0.91), y0 + int(h * 0.34)
@@ -111,32 +173,114 @@ jobs:
                   s5x, s5y = x0 + int(w * 0.14), y0 + int(h * 0.58)
                   s6x, s6y = x0 + int(w * 0.36), y0 + int(h * 0.89)
 
+                  sh1x, sh1y = x0 + int(w * 0.94), y0 + int(h * 0.08)
+                  sh2x, sh2y = x0 + int(w * 0.76), y0 + int(h * 0.05)
+
                   lx, ly = x0 + int(w * 0.04), y0 + int(h * 0.72)
 
                   decor_svg = f'''
                   <g xmlns="http://www.w3.org/2000/svg" id="aesthetic-decor">
+                    <defs>
+                      <linearGradient id="shoot-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+                        <stop offset="35%" stop-color="#8ECAE6" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#8ECAE6" stop-opacity="0" />
+                      </linearGradient>
+                      <linearGradient id="headlight-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+                        <stop offset="0%" stop-color="#fef08a" stop-opacity="0.65" />
+                        <stop offset="100%" stop-color="#fef08a" stop-opacity="0" />
+                      </linearGradient>
+                    </defs>
+
                     <style>
                       @keyframes twinkleA {{ 0%, 100% {{ opacity: 0.95; }} 50% {{ opacity: 0.25; }} }}
                       @keyframes twinkleB {{ 0%, 100% {{ opacity: 0.3; }} 50% {{ opacity: 0.95; }} }}
                       @keyframes pulseDot {{ 0%, 100% {{ opacity: 1; }} 50% {{ opacity: 0.35; }} }}
+
+                      @keyframes moonFloat {{
+                        0%, 100% {{ transform: translateY(0px) rotate(-2deg); }}
+                        50% {{ transform: translateY(-10px) rotate(3deg); }}
+                      }}
+                      @keyframes moonHalo {{
+                        0%, 100% {{ opacity: 0.06; transform: scale(1); }}
+                        50% {{ opacity: 0.14; transform: scale(1.08); }}
+                      }}
+
+                      @keyframes shootA {{
+                        0%, 68% {{ transform: translate(0px, 0px); opacity: 0; }}
+                        72% {{ opacity: 1; }}
+                        86% {{ transform: translate(-290px, 168px); opacity: 0; }}
+                        100% {{ transform: translate(-290px, 168px); opacity: 0; }}
+                      }}
+                      @keyframes shootB {{
+                        0%, 74% {{ transform: translate(0px, 0px); opacity: 0; }}
+                        78% {{ opacity: 0.9; }}
+                        90% {{ transform: translate(-240px, 138px); opacity: 0; }}
+                        100% {{ transform: translate(-240px, 138px); opacity: 0; }}
+                      }}
+
+                      @keyframes driveCar1 {{
+                        0% {{ transform: translate(0px, 0px); opacity: 0; }}
+                        6% {{ opacity: 1; }}
+                        92% {{ opacity: 1; }}
+                        100% {{ transform: translate({c1_dx:.1f}px, {c1_dy:.1f}px); opacity: 0; }}
+                      }}
+                      @keyframes driveCar2 {{
+                        0% {{ transform: translate(0px, 0px); opacity: 0; }}
+                        6% {{ opacity: 1; }}
+                        92% {{ opacity: 1; }}
+                        100% {{ transform: translate({c2_dx:.1f}px, {c2_dy:.1f}px); opacity: 0; }}
+                      }}
+                      @keyframes driveCar3 {{
+                        0% {{ transform: translate(0px, 0px); opacity: 0; }}
+                        12% {{ opacity: 1; }}
+                        88% {{ opacity: 1; }}
+                        100% {{ transform: translate({c3_dx:.1f}px, {c3_dy:.1f}px); opacity: 0; }}
+                      }}
+
                       .twA {{ animation: twinkleA 3.2s ease-in-out infinite; }}
                       .twB {{ animation: twinkleB 4.1s ease-in-out infinite; }}
                       .pulse {{ animation: pulseDot 2.2s ease-in-out infinite; }}
+                      .moon-bob {{ animation: moonFloat 5.5s ease-in-out infinite; }}
+                      .moon-glow {{ animation: moonHalo 5.5s ease-in-out infinite; }}
+                      .shoot-1 {{ animation: shootA 5.8s ease-out infinite; }}
+                      .shoot-2 {{ animation: shootB 8.2s ease-out infinite 2.4s; }}
+                      .car-1 {{ animation: driveCar1 13s linear infinite; }}
+                      .car-2 {{ animation: driveCar2 16s linear infinite -5s; }}
+                      .car-3 {{ animation: driveCar3 6.5s linear infinite -2s; }}
                       .hud-title {{ font-family: "Fira Code", "Ubuntu Mono", monospace; font-size: 23px; font-weight: 600; fill: #8ECAE6; }}
                       .hud-sub {{ font-family: "Fira Code", "Ubuntu Mono", monospace; font-size: 20px; fill: #8b949e; }}
                     </style>
 
-                    <!-- Garis konstelasi tipis di langit kanan atas -->
+                    <!-- Garis konstelasi tipis -->
                     <polyline points="{s4x},{s4y} {s1x},{s1y} {s3x},{s3y} {s2x},{s2y}" fill="none" stroke="#8ECAE6" stroke-opacity="0.14" stroke-width="2" stroke-dasharray="6 6" />
 
-                    <!-- Bulan sabit biru es + glow lembut -->
+                    <!-- Bulan sabit animasi melayang + glow bernapas -->
                     <g transform="translate({mx}, {my})">
-                      <circle cx="0" cy="0" r="88" fill="#8ECAE6" opacity="0.05" />
-                      <circle cx="0" cy="0" r="64" fill="#8ECAE6" opacity="0.09" />
-                      <path d="M 15 -47.7 A 50 50 0 1 0 47.7 15 A 42 42 0 0 1 15 -47.7 Z" fill="#8ECAE6" opacity="0.92" />
+                      <g class="moon-bob">
+                        <circle class="moon-glow" cx="0" cy="0" r="90" fill="#8ECAE6" />
+                        <circle cx="0" cy="0" r="64" fill="#8ECAE6" opacity="0.09" />
+                        <path d="M 15 -47.7 A 50 50 0 1 0 47.7 15 A 42 42 0 0 1 15 -47.7 Z" fill="#8ECAE6" opacity="0.94" />
+                      </g>
                     </g>
 
-                    <!-- Bintang berkelip (✦) & titik kecil -->
+                    <!-- Shooting stars -->
+                    <g transform="translate({sh1x}, {sh1y})">
+                      <g class="shoot-1">
+                        <line x1="0" y1="0" x2="115" y2="-66" stroke="url(#shoot-grad)" stroke-width="4" stroke-linecap="round" />
+                        <circle cx="0" cy="0" r="9" fill="#8ECAE6" opacity="0.4" />
+                        <circle cx="0" cy="0" r="4" fill="#ffffff" />
+                      </g>
+                    </g>
+                    <g transform="translate({sh2x}, {sh2y})">
+                      <g class="shoot-2">
+                        <line x1="0" y1="0" x2="90" y2="-52" stroke="url(#shoot-grad)" stroke-width="3" stroke-linecap="round" />
+                        <circle cx="0" cy="0" r="7" fill="#57da69" opacity="0.35" />
+                        <circle cx="0" cy="0" r="3" fill="#ffffff" />
+                      </g>
+                    </g>
+
+                    <!-- Bintang berkelip -->
                     <g class="twA" transform="translate({s1x}, {s1y})">
                       <path d="M 0 -20 Q 0 0 20 0 Q 0 0 0 20 Q 0 0 -20 0 Q 0 0 0 -20 Z" fill="#8ECAE6" />
                     </g>
@@ -154,6 +298,54 @@ jobs:
                     </g>
                     <g class="twB" transform="translate({s6x}, {s6y})">
                       <circle cx="0" cy="0" r="4.5" fill="#57da69" opacity="0.7" />
+                    </g>
+
+                    <!-- Mobil 1: biru es melaju turun-kanan menuju kota hijau -->
+                    <g transform="translate({c1_sx:.1f}, {c1_sy:.1f})">
+                      <g class="car-1">
+                        <g transform="rotate({c1_ang:.2f})">
+                          <polygon points="13,-5 58,-15 58,15 13,5" fill="url(#headlight-grad)" />
+                          <rect x="-14" y="-7" width="28" height="14" rx="4" fill="#8ECAE6" />
+                          <rect x="-7" y="-5" width="13" height="10" rx="2.5" fill="#e0f2fe" />
+                          <rect x="4" y="-4.5" width="4" height="9" rx="1" fill="#0f172a" opacity="0.75" />
+                          <circle cx="13.5" cy="-4" r="2" fill="#fef08a" />
+                          <circle cx="13.5" cy="4" r="2" fill="#fef08a" />
+                          <circle cx="-13.5" cy="-4" r="2" fill="#f87171" />
+                          <circle cx="-13.5" cy="4" r="2" fill="#f87171" />
+                        </g>
+                      </g>
+                    </g>
+
+                    <!-- Mobil 2: mint melaju naik-kiri di sisi seberang -->
+                    <g transform="translate({c2_sx:.1f}, {c2_sy:.1f})">
+                      <g class="car-2">
+                        <g transform="rotate({c2_ang:.2f})">
+                          <polygon points="13,-5 56,-14 56,14 13,5" fill="url(#headlight-grad)" />
+                          <rect x="-13" y="-6.5" width="26" height="13" rx="4" fill="#86efac" />
+                          <rect x="-6" y="-4.5" width="12" height="9" rx="2" fill="#ecfdf5" />
+                          <rect x="4" y="-4" width="3.5" height="8" rx="1" fill="#0f172a" opacity="0.75" />
+                          <circle cx="12.5" cy="-3.8" r="1.9" fill="#fef08a" />
+                          <circle cx="12.5" cy="3.8" r="1.9" fill="#fef08a" />
+                          <circle cx="-12.5" cy="-3.8" r="1.9" fill="#f87171" />
+                          <circle cx="-12.5" cy="3.8" r="1.9" fill="#f87171" />
+                        </g>
+                      </g>
+                    </g>
+
+                    <!-- Mobil 3: kuning hangat melintas di depan gedung-gedung hijau -->
+                    <g transform="translate({c3_sx:.1f}, {c3_sy:.1f})">
+                      <g class="car-3">
+                        <g transform="rotate({c3_ang:.2f})">
+                          <polygon points="12,-4.5 48,-13 48,13 12,4.5" fill="url(#headlight-grad)" />
+                          <rect x="-12" y="-6" width="24" height="12" rx="3.5" fill="#fde68a" />
+                          <rect x="-5.5" y="-4" width="11" height="8" rx="2" fill="#fffbeb" />
+                          <rect x="3.5" y="-3.8" width="3.5" height="7.6" rx="1" fill="#0f172a" opacity="0.75" />
+                          <circle cx="11.5" cy="-3.5" r="1.8" fill="#ffffff" />
+                          <circle cx="11.5" cy="3.5" r="1.8" fill="#ffffff" />
+                          <circle cx="-11.5" cy="-3.5" r="1.8" fill="#f87171" />
+                          <circle cx="-11.5" cy="3.5" r="1.8" fill="#f87171" />
+                        </g>
+                      </g>
                     </g>
 
                     <!-- Mini HUD minimalis di kiri bawah -->
