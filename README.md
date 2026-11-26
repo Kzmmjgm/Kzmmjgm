@@ -36,14 +36,23 @@
   <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/profile-3d-contrib/profile-night-green.svg?v=1" alt="Kzmmjgm 3D contribution city" />
 </p>
 
-<p align="center"><sub>Every building is a day; taller means more contributions.</sub></p>
+<p align="center"><sub>Every building is a day; taller means more contributions.</sub></p> 
 
 ---
-
 ### 🤝 Let's Connect
-<p align="center">Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka buat diskusi seputar web, mobile, atau kolaborasi project.</p>
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/main/assets/connect.gif" alt="Let's Connect GIF" />
+<table>
+<tr>
+<td valign="middle" width="60%">
+<p>Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka buat diskusi seputar web, mobile, atau kolaborasi project.</p>
+<br>
+<p>
+<a href="LINK_LINKEDIN_DISINI"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
+<a href="LINK_PORTFOLIO_ATAU_IG"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"/></a>
+<a href="mailto:EMAIL_KAMU_DISINI"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
 </p>
-<p align="center">
-  <a href="LINK_LINKEDIN_DISINI"><img src="
+</td>
+<td align="center" width="40%">
+<img src="https://github.com/user-attachments/assets/be5a4d42-5331-4da4-9af9-b6e4e1e00c0d" width="200" alt="Kazumi Majiami" />
+</td>
+</tr>
+</table>
