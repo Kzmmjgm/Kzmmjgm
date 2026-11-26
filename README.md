@@ -67,3 +67,13 @@ Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka 
 <a href="mailto:hugogario999@gmail.com"><img src="https://img.shields.io/badge/Email-161b22?style=for-the-badge&logo=gmail&logoColor=F87171" alt="Email"/></a>
 
 <br clear="right" />
+
+<br/>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/footer-skyline.svg" alt="Kazumi Night Skyline" />
+  <br/>
+  <sub>✦ thanks for stopping by ✦</sub>
+  <br/><br/>
+  <img src="https://komarev.com/ghpvc/?username=Kzmmjgm&label=PROFILE+VIEWS&color=161b22&style=flat-square" alt="Profile views" />
+</p>
