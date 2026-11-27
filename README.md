@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1200&color=8ECAE6&center=true&vCenter=true&width=650&lines=Hi%2C+I'm+Kazumi+Majigami!;Software+Developer+%7C+Tech+Enthusiast" alt="Kazumi Majigami" />
   <p><sub>✦ building simple, clean, and usable apps — web & mobile ✦</sub></p>
   <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/header-pipeline.svg?v=8" width="660" alt="Kazumi Dev Pipeline" />
-</div>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1200&color=8ECAE6&center=true&vCenter=true&width=650&lines=Hi%2C+I'm+Kazumi+Majigami!;Software+Developer+%7C+Tech+Enthusiast" alt="Kazumi Majigami" />
+  </div>
 
 <br/>
 
