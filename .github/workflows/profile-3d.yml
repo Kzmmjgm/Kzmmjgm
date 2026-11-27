@@ -49,8 +49,8 @@ jobs:
               with open(path, "r", encoding="utf-8") as f:
                   raw = f.read()
 
-              raw = re.sub(r"(\.fill-bg\s*\{\s*fill:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
-              raw = re.sub(r"(\.stroke-bg\s*\{\s*stroke:\s*)[^;}\s]+", r"\g<1>#0d1117", raw)
+              raw = re.sub(r"(\.fill-bg\s*\{\s*fill:\s*)[^;}\s]+", r"\g<1>none", raw)
+              raw = re.sub(r"(\.stroke-bg\s*\{\s*stroke:\s*)[^;}\s]+", r"\g<1>none", raw)
 
               root = ET.fromstring(raw)
               parent_map = {child: parent for parent in root.iter() for child in parent}
@@ -363,7 +363,7 @@ jobs:
               if "background" in style:
                   parts = [p for p in style.split(";") if not p.strip().startswith("background")]
                   style = ";".join(parts).strip(";")
-              root.attrib["style"] = (style + "; background: #0d1117;").lstrip("; ")
+              root.attrib["style"] = (style + "; background: transparent;").lstrip("; ")
 
               tree = ET.ElementTree(root)
               tree.write(path, encoding="utf-8", xml_declaration=True)
