@@ -1,17 +1,21 @@
 <div align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1200&color=8ECAE6&center=true&vCenter=true&width=650&lines=Hi%2C+I'm+Kazumi+Majigami!;Software+Developer+%7C+Tech+Enthusiast" alt="Kazumi Majigami" />
   <p><sub>✦ building simple, clean, and usable apps — web & mobile ✦</sub></p>
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/header-pipeline.svg?v=8" width="660" alt="Kazumi Dev Pipeline" />
 </div>
 
 <br/>
 
 ### ✦ About Me
-<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/profile-3d-contrib/profile-night-green.svg?v=2" width="410" alt="Kzmmjgm 3D contribution city" />
+<img align="right" src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/profile-3d-contrib/profile-night-green.svg?v=3" width="410" alt="Kzmmjgm 3D contribution city" />
 
-- `›` Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.
-- `›` Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.
-- `›` Suka ngubah ide yang awalnya ribet jadi sesuatu yang lebih simpel dan bisa dipakai.
-- `›` Tertarik juga sama UI/UX dan gimana bikin aplikasi yang enak dilihat sekaligus nyaman digunakan.
+`›` Suka ngulik dan bikin berbagai macam aplikasi, dari web sampai mobile.
+
+`›` Lagi terus belajar dan nyoba teknologi baru lewat project-project kecil.
+
+`›` Suka ngubah ide yang awalnya ribet jadi sesuatu yang lebih simpel dan bisa dipakai.
+
+`›` Tertarik juga sama UI/UX dan gimana bikin aplikasi yang enak dilihat sekaligus nyaman digunakan.
 
 <br/>
 <sub>🏙️ <i>The city I built this year — every building is a day; taller means more contributions.</i></sub>
@@ -26,7 +30,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Java-161b22?style=for-the-badge&logo=openjdk&logoColor=F89820" />
   <img src="https://img.shields.io/badge/HTML5-161b22?style=for-the-badge&logo=html5&logoColor=E34F26" />
-  <img src="https://img.shields.io/badge/CSS3-161b22?style=for-the-badge&logo=css3&logoColor=38BDF8" />
+  <img src="https://img.shields.io/badge/CSS3-161b22?style=for-the-badge&logo=css&logoColor=38BDF8" />
   <img src="https://img.shields.io/badge/JavaScript-161b22?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
   <img src="https://img.shields.io/badge/Python-161b22?style=for-the-badge&logo=python&logoColor=60A5FA" />
   <img src="https://img.shields.io/badge/SQL-161b22?style=for-the-badge&logo=postgresql&logoColor=60A5FA" />
@@ -71,7 +75,7 @@ Jangan ragu buat ngobrol atau nyapa aku lewat platform di bawah ini ya! Terbuka 
 <br/>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/footer-skyline.svg" alt="Kazumi Night Skyline" />
+  <img src="https://raw.githubusercontent.com/Kzmmjgm/Kzmmjgm/refs/heads/main/assets/footer-skyline.svg?v=2" alt="Kazumi Night Skyline" />
   <br/>
   <sub>✦ thanks for stopping by ✦</sub>
   <br/><br/>
